@@ -3,14 +3,14 @@ from scipy import constants
 class erbium_host_crystals():
 	def __init__(
 		self,
-		refractive_index: float,
 		wavelength: float,
 		optical_lifetime: float,
 		branching_ratio: float,
-		spontaneous_lifetime: float,
 		dipole_moment: float,
-		oscilator_strength: float,
+		spontaneous_lifetime: float,
 		lifetime_limit: float,
+		oscilator_strength: float,
+		refractive_index: float,
 	):
 		self.refractive_index = refractive_index if refractive_index is not None else 2
 		self.wavelength = (wavelength * 1e-9) if wavelength is not None else None
@@ -38,8 +38,21 @@ class erbium_host_crystals():
 		"oscilator_strength": (("dipole_moment", "wavelength"), self.solve_oscilator_strength),
 		"lifetime_limit": (("optical_lifetime"), self.solve_lifetime_limit)
 		}
+		self.get_missing_values()
 
 	def get_values(self):
+		ordered_attributes = []
+		ordered_attributes.append(self.wavelength)
+		ordered_attributes.append(self.optical_lifetime)
+		ordered_attributes.append(self.branching_ratio)
+		ordered_attributes.append(self.dipole_moment)
+		ordered_attributes.append(self.spontaneous_lifetime)
+		ordered_attributes.append(self.lifetime_limit)
+		ordered_attributes.append(self.oscilator_strength)
+		ordered_attributes.append(self.refractive_index)
+		return ordered_attributes
+
+	def print_values(self):
 		for (x,y) in self.__dict__.items():
 			if x in self.ignore_attributes: continue
 			print(f"{x}: {y}")
@@ -109,7 +122,7 @@ class erbium_host_crystals():
 		# f = (2 * \mu * m_e * \omega) / (\hbar * e^2)
 
 		angular_frequency = 2 * constants.pi * constants.c / self.wavelength
-		numerator = 2 * self.dipole_moment * constants.m_e * angular_frequency
+		numerator = 2 * (self.dipole_moment ** 2) * constants.m_e * angular_frequency
 		denominator = constants.hbar * (constants.e ** 2)
 
 		self.oscilator_strength = numerator / denominator
@@ -121,18 +134,17 @@ class erbium_host_crystals():
 
 
 def main():
-	# (wavelength(nm), optical_lifetime(ms), branching_ratio, spontaneous_lifetime(ms),
-	#	oscilator_strength, dipole_moment(C/m), lifetime_limit(Hz), site_symmetry
-
 	#Takes in usual values in the usual units. e.g. wavelength is usualy given in nm so expects nm
 
 	#Outputs values in SI units
 
+	#erbium_host_crystal.get_values() returns an array in order of all the attibutes.
+
 	#Fractional Uncertainty: 
 
-	Y_2SiO_5 = erbium_host_crystals(None, 1536.47769, 11.4, 0.2, None, None, None, None)
-	Y_2SiO_5.get_missing_values()
-	Y_2SiO_5.get_values()
+	Y_2SiO_5 = erbium_host_crystals(1536.4776, 11.4, 0.2, None, None, None, None, None)
+	Y_2SiO_5.print_values()
+	print(Y_2SiO_5.get_values())
 
 if __name__ == "__main__":
 	main()
