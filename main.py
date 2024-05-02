@@ -111,7 +111,7 @@ class erbium_host_crystals():
 		for (attr, value) in self.__dict__.items():
 			if attr in self.ignore_attributes:
 				continue
-			if value is None:
+			if value is None and value in list(self.attribute_requiremnts):
 				if type(self.attribute_requiremnts[attr]) is list:
 					for requirments in self.attribute_requiremnts[attr]:
 						required_attributes =  set(requirments[0])
@@ -212,7 +212,7 @@ def main():
 	# Y_2SiO_5.print_values()
 	# print(Y_2SiO_5.get_values())
 
-	YVO_4 = erbium_host_crystals(1529.21, None, 3.34, None, 0.415, None, 1.00E-32, None, None, None, None, None, None, None, None, None)
+	YVO_4 = erbium_host_crystals(None, None, 3.34, None, 0.415, None, 1.00E-32, None, None, None, None, None, None, None, None, None)
 	# YVO_4.print_values()
 	print(YVO_4.get_values())
 
