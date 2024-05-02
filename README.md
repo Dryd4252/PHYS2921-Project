@@ -1,5 +1,5 @@
 Required libaries:
-  scipy
+  scipy, 
   uncertainties
 
   For linux\
