@@ -1,4 +1,4 @@
-Required libaries:
+Required libaries:\
   scipy, 
   uncertainties
 
@@ -6,6 +6,6 @@ Required libaries:
     pip install scipy, 
     pip install uncertainties
 
-  For Windows
+  For Windows\
     https://pypi.org/project/scipy/#files, 
     https://pypi.org/project/uncertainties/#files  
