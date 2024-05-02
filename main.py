@@ -81,22 +81,22 @@ class erbium_host_crystals():
 
 	def get_values(self):
 		ordered_attributes = []
-		ordered_attributes.append(self.wavelength.n)
-		ordered_attributes.append(self.wavelength.s)
-		ordered_attributes.append(self.optical_lifetime.n)
-		ordered_attributes.append(self.optical_lifetime.s)
-		ordered_attributes.append(self.branching_ratio.n)
-		ordered_attributes.append(self.branching_ratio.s)
-		ordered_attributes.append(self.dipole_moment.n)
-		ordered_attributes.append(self.dipole_moment.s)
-		ordered_attributes.append(self.spontaneous_lifetime.n)
-		ordered_attributes.append(self.spontaneous_lifetime.s)
-		ordered_attributes.append(self.lifetime_limit.n)
-		ordered_attributes.append(self.lifetime_limit.s)
-		ordered_attributes.append(self.oscilator_strength.n)
-		ordered_attributes.append(self.oscilator_strength.s)
-		ordered_attributes.append(self.refractive_index.n)
-		ordered_attributes.append(self.refractive_index.s)
+		ordered_attributes.append(self.wavelength.n if self.wavelength is not None else None)
+		ordered_attributes.append(self.wavelength.s if self.wavelength is not None else None)
+		ordered_attributes.append(self.optical_lifetime.n if self.optical_lifetime is not None else None)
+		ordered_attributes.append(self.optical_lifetime.s if self.optical_lifetime is not None else None)
+		ordered_attributes.append(self.branching_ratio.n if self.branching_ratio is not None else None)
+		ordered_attributes.append(self.branching_ratio.s if self.branching_ratio is not None else None)
+		ordered_attributes.append(self.dipole_moment.n if self.dipole_moment is not None else None)
+		ordered_attributes.append(self.dipole_moment.s if self.dipole_moment is not None else None)
+		ordered_attributes.append(self.spontaneous_lifetime.n if self.spontaneous_lifetime is not None else None)
+		ordered_attributes.append(self.spontaneous_lifetime.s if self.spontaneous_lifetime is not None else None)
+		ordered_attributes.append(self.lifetime_limit.n if self.lifetime_limit is not None else None)
+		ordered_attributes.append(self.lifetime_limit.s if self.lifetime_limit is not None else None)
+		ordered_attributes.append(self.oscilator_strength.n if self.oscilator_strength is not None else None)
+		ordered_attributes.append(self.oscilator_strength.s if self.oscilator_strength is not None else None)
+		ordered_attributes.append(self.refractive_index.n if self.refractive_index is not None else None)
+		ordered_attributes.append(self.refractive_index.s if self.refractive_index is not None else None)
 		return ordered_attributes
 
 	def print_values(self):
@@ -213,6 +213,7 @@ def main():
 	# print(Y_2SiO_5.get_values())
 
 	YVO_4 = erbium_host_crystals(1529.21, None, 3.34, None, 0.415, None, 1.00E-32, None, None, None, None, None, None, None, None, None)
+	# YVO_4.print_values()
 	print(YVO_4.get_values())
 
 
