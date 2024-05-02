@@ -1,29 +1,51 @@
 from scipy import constants
+from uncertainties import ufloat
 
 class erbium_host_crystals():
 	def __init__(
 		self,
 		wavelength: float,
+		wavelength_unc: float,
 		optical_lifetime: float,
+		optical_lifetime_unc: float,
 		branching_ratio: float,
+		branching_ratio_unc: float,
 		dipole_moment: float,
+		dipole_moment_unc: float,
 		spontaneous_lifetime: float,
+		spontaneous_lifetime_unc: float,
 		lifetime_limit: float,
+		lifetime_limit_unc: float,
 		oscilator_strength: float,
+		oscilator_strength_unc: float,
 		refractive_index: float,
-	):
-		self.refractive_index = refractive_index if refractive_index is not None else 2
-		self.wavelength = (wavelength * 1e-9) if wavelength is not None else None
-		self.optical_lifetime = (optical_lifetime * 1e-3) if optical_lifetime is not None else None
-		self.branching_ratio = branching_ratio
-		self.spontaneous_lifetime = (spontaneous_lifetime * 1e-3) if spontaneous_lifetime is not None else None
-		self.dipole_moment = dipole_moment 
-		self.oscilator_strength = oscilator_strength 
-		self.lifetime_limit = lifetime_limit
+		refractive_index_unc: float
+	):	
+		refractive_index = 2 if refractive_index is None else refractive_index
+		self.refractive_index =  self.set_value(refractive_index, refractive_index_unc)
+
+		wavelength = (wavelength * 1e-9) if wavelength is not None else None
+		self.wavelength =  self.set_value(wavelength, wavelength_unc)
+
+		optical_lifetime = (optical_lifetime * 1e-3) if optical_lifetime is not None else None
+		self.optical_lifetime = self.set_value(optical_lifetime, optical_lifetime_unc)
+
+		self.branching_ratio = self.set_value(branching_ratio, branching_ratio_unc)
+
+		spontaneous_lifetime = (spontaneous_lifetime * 1e-3) if spontaneous_lifetime is not None else None
+		self.spontaneous_lifetime = self.set_value(spontaneous_lifetime, spontaneous_lifetime_unc)
+
+		self.dipole_moment = self.set_value(dipole_moment, dipole_moment_unc)
+
+		self.oscilator_strength = self.set_value(oscilator_strength, oscilator_strength_unc)
+
+		self.lifetime_limit = self.set_value(lifetime_limit, lifetime_limit_unc)
+
 		self.ignore_attributes = (
 			"ignore_attributes", 
 			"attribute_requiremnts"
 		)
+
 		self.attribute_requiremnts = {
 		"spontaneous_lifetime": [
 			(("optical_lifetime", "branching_ratio"), self.solve_spontaneous_lifetime_1),
@@ -38,18 +60,43 @@ class erbium_host_crystals():
 		"oscilator_strength": (("dipole_moment", "wavelength"), self.solve_oscilator_strength),
 		"lifetime_limit": (("optical_lifetime"), self.solve_lifetime_limit)
 		}
+
 		self.get_missing_values()
+
+	@staticmethod
+	def set_value(value, unc):
+		if value is None:
+			return None
+		if unc is None:
+			s = str(float(value))
+			if 'e' in s:
+				parts = s.split("e")
+				significance = int(parts[1])
+				unc = 10 ** significance
+			else:
+				parts = s.split(".")
+				significance = -1 * len(parts[1]) if len(parts) == 2 else 0
+				unc = 10 ** significance
+		return ufloat(value, unc)
 
 	def get_values(self):
 		ordered_attributes = []
-		ordered_attributes.append(self.wavelength)
-		ordered_attributes.append(self.optical_lifetime)
-		ordered_attributes.append(self.branching_ratio)
-		ordered_attributes.append(self.dipole_moment)
-		ordered_attributes.append(self.spontaneous_lifetime)
-		ordered_attributes.append(self.lifetime_limit)
-		ordered_attributes.append(self.oscilator_strength)
-		ordered_attributes.append(self.refractive_index)
+		ordered_attributes.append(self.wavelength.n)
+		ordered_attributes.append(self.wavelength.s)
+		ordered_attributes.append(self.optical_lifetime.n)
+		ordered_attributes.append(self.optical_lifetime.s)
+		ordered_attributes.append(self.branching_ratio.n)
+		ordered_attributes.append(self.branching_ratio.s)
+		ordered_attributes.append(self.dipole_moment.n)
+		ordered_attributes.append(self.dipole_moment.s)
+		ordered_attributes.append(self.spontaneous_lifetime.n)
+		ordered_attributes.append(self.spontaneous_lifetime.s)
+		ordered_attributes.append(self.lifetime_limit.n)
+		ordered_attributes.append(self.lifetime_limit.s)
+		ordered_attributes.append(self.oscilator_strength.n)
+		ordered_attributes.append(self.oscilator_strength.s)
+		ordered_attributes.append(self.refractive_index.n)
+		ordered_attributes.append(self.refractive_index.s)
 		return ordered_attributes
 
 	def print_values(self):
@@ -71,6 +118,7 @@ class erbium_host_crystals():
 						if len(required_attributes & set(missing_values)) == 0:
 							requirments[1]()
 							missing_values.remove(attr)
+							break
 				else:
 					requirments = self.attribute_requiremnts[attr]
 					required_attributes =  set(requirments[0])
@@ -142,9 +190,31 @@ def main():
 
 	#Fractional Uncertainty: 
 
-	Y_2SiO_5 = erbium_host_crystals(1536.4776, 11.4, 0.2, None, None, None, None, None)
-	Y_2SiO_5.print_values()
-	print(Y_2SiO_5.get_values())
+	# Values required
+	# 	wavelength: float,
+	# 	wavelength_unc: float,
+	# 	optical_lifetime: float,
+	# 	optical_lifetime_unc: float,
+	# 	branching_ratio: float,
+	# 	branching_ratio_unc: float,
+	# 	dipole_moment: float,
+	# 	dipole_moment_unc: float,
+	# 	spontaneous_lifetime: float,
+	# 	spontaneous_lifetime_unc: float,
+	# 	lifetime_limit: float,
+	# 	lifetime_limit_unc: float,
+	# 	oscilator_strength: float,
+	# 	oscilator_strength_unc: float,
+	# 	refractive_index: float,
+	# 	refractive_index_unc: float
+
+	# Y_2SiO_5 = erbium_host_crystals(1536.4776, None, 11.4, None, 0.2, None, None, None, None, None, None, None, None, None, None, None)
+	# Y_2SiO_5.print_values()
+	# print(Y_2SiO_5.get_values())
+
+	YVO_4 = erbium_host_crystals(1529.21, None, 3.34, None, 0.415, None, 1.00E-32, None, None, None, None, None, None, None, None, None)
+	print(YVO_4.get_values())
+
 
 if __name__ == "__main__":
 	main()
