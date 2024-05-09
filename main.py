@@ -24,16 +24,18 @@ class erbium_host_crystals():
 		refractive_index = 2 if refractive_index is None else refractive_index
 		self.refractive_index =  self.set_value(refractive_index, refractive_index_unc)
 
-		wavelength = (wavelength * 1e-9) if wavelength is not None else None
 		self.wavelength =  self.set_value(wavelength, wavelength_unc)
+		self.wavelength = self.wavelength * 1e-9 if self.wavelength is not None else None
 
-		optical_lifetime = (optical_lifetime * 1e-3) if optical_lifetime is not None else None
 		self.optical_lifetime = self.set_value(optical_lifetime, optical_lifetime_unc)
+		self.optical_lifetime = (self.optical_lifetime * 1e-3 
+							if self.optical_lifetime is not None else None)
 
 		self.branching_ratio = self.set_value(branching_ratio, branching_ratio_unc)
 
-		spontaneous_lifetime = (spontaneous_lifetime * 1e-3) if spontaneous_lifetime is not None else None
 		self.spontaneous_lifetime = self.set_value(spontaneous_lifetime, spontaneous_lifetime_unc)
+		self.spontaneous_lifetime = (self.spontaneous_lifetime * 1e-3 
+							if self.spontaneous_lifetime is not None else None)
 
 		self.dipole_moment = self.set_value(dipole_moment, dipole_moment_unc)
 
@@ -62,6 +64,9 @@ class erbium_host_crystals():
 		}
 
 		self.get_missing_values()
+		self.wavelength *= 1e9 if self.wavelength is not None else None
+		self.optical_lifetime *= 1e3 if self.optical_lifetime is not None else None
+		self.spontaneous_lifetime = self.spontaneous_lifetime * 1e3 if self.spontaneous_lifetime is not None else None
 
 	@staticmethod
 	def set_value(value, unc):
@@ -72,11 +77,11 @@ class erbium_host_crystals():
 			if 'e' in s:
 				parts = s.split("e")
 				significance = int(parts[1])
-				unc = 10 ** significance
+				unc = (10 ** significance)/2
 			else:
 				parts = s.split(".")
 				significance = -1 * len(parts[1]) if len(parts) == 2 else 0
-				unc = 10 ** significance
+				unc = (10 ** significance)/2
 		return ufloat(value, unc)
 
 	def get_values(self):
@@ -212,7 +217,7 @@ def main():
 	# Y_2SiO_5.print_values()
 	# print(Y_2SiO_5.get_values())
 
-	YVO_4 = erbium_host_crystals(None, None, 3.34, None, 0.415, None, 1.00E-32, None, None, None, None, None, None, None, None, None)
+	YVO_4 = erbium_host_crystals(1529.21, None, 3.34, None, 0.415, None, 1.00E-32, None, None, None, None, None, None, None, None, None)
 	# YVO_4.print_values()
 	print(YVO_4.get_values())
 
