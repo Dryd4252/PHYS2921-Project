@@ -64,6 +64,7 @@ class erbium_host_crystals():
 		}
 
 		self.get_missing_values()
+
 		self.wavelength *= 1e9 if self.wavelength is not None else None
 		self.optical_lifetime *= 1e3 if self.optical_lifetime is not None else None
 		self.spontaneous_lifetime = self.spontaneous_lifetime * 1e3 if self.spontaneous_lifetime is not None else None
@@ -113,11 +114,14 @@ class erbium_host_crystals():
 		missing_values = [attr for (attr, value) in self.__dict__.items() 
 			if value is None and attr not in self.ignore_attributes]
 
+		# print(missing_values)
+
 		for (attr, value) in self.__dict__.items():
 			if attr in self.ignore_attributes:
 				continue
-			if value is None and value in list(self.attribute_requiremnts):
+			if value is None and attr in list(self.attribute_requiremnts):
 				if type(self.attribute_requiremnts[attr]) is list:
+					print(attr)
 					for requirments in self.attribute_requiremnts[attr]:
 						required_attributes =  set(requirments[0])
 						if len(required_attributes & set(missing_values)) == 0:
@@ -154,7 +158,7 @@ class erbium_host_crystals():
 		self.spontaneous_lifetime = (numerator / denominator) * (refractive_index_modifier ** 2)
 
 	def solve_dipole_moment_2(self):
-
+		print("HERE!")
 		angular_frequency = 2 * constants.pi * constants.c / self.wavelength
 		numerator = 3 * constants.epsilon_0 * constants.c * (self.wavelength ** 2) * constants.hbar
 		denominator = 4 * constants.pi * self.refractive_index * self.spontaneous_lifetime * angular_frequency
@@ -216,10 +220,15 @@ def main():
 	# Y_2SiO_5 = erbium_host_crystals(1536.4776, None, 11.4, None, 0.2, None, None, None, None, None, None, None, None, None, None, None)
 	# Y_2SiO_5.print_values()
 	# print(Y_2SiO_5.get_values())
+								#wavelength   #lifetime   #branching ratio  #dipole moment
+	YVO_4 = erbium_host_crystals(1529.21, None, 3.34, None  , 0.415, None     , 1.00E-32, None
+								#spont_lifetime  #limit_lifetime  #oscilator_strength  refractive_index
+								, None, None     , None, None     , None, None         , None, None)
+	YVO_4.print_values()
+	# print(YVO_4.get_values())
 
-	YVO_4 = erbium_host_crystals(1529.21, None, 3.34, None, 0.415, None, 1.00E-32, None, None, None, None, None, None, None, None, None)
-	# YVO_4.print_values()
-	print(YVO_4.get_values())
+
+	#add normalised T_spon value with refractivce index, (n * T_1)
 
 
 if __name__ == "__main__":
