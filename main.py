@@ -52,7 +52,10 @@ class erbium_host_crystals():
 			"ignore_attributes", 
 			"attribute_requiremnts",
 			"site_symetry_dict",
+			"calculated_attributes",
 		)
+
+		self.calculated_attributes = set()
 
 		self.site_symetry_dict = {
 			"O_h": 6,
@@ -106,6 +109,24 @@ class erbium_host_crystals():
 		}
 
 		self.get_missing_values()
+
+		for x in self.calculated_attributes:
+			if x == "refractive_index":
+				self.refractive_index *= -1
+			elif x == "wavelength":
+				self.wavelength *= -1
+			elif x == "optical_lifetime":
+				self.optical_lifetime *= -1
+			elif x == "branching_ratio":
+				self.branching_ratio *= -1
+			elif x == "spontaneous_lifetime":
+				self.spontaneous_lifetime *= -1
+			elif x == "dipole_moment":
+				self.dipole_moment *= -1
+			elif x == "oscilator_strength":
+				self.oscilator_strength *= -1
+			elif x == "lifetime_limit":
+				self.lifetime_limit *= -1							
 
 		self.site_symetry = site_symetry		
 
@@ -178,6 +199,7 @@ class erbium_host_crystals():
 						if len(required_attributes & set(missing_values)) == 0:
 							requirments[1]()
 							missing_values.remove(attr)
+							self.calculated_attributes.add(attr)
 							break
 				else:
 					requirments = self.attribute_requiremnts[attr]
@@ -185,11 +207,13 @@ class erbium_host_crystals():
 					if len(required_attributes & set(missing_values)) == 0:
 						requirments[1]()
 						missing_values.remove(attr)
+						self.calculated_attributes.add(attr)
+
 
 	def solve_spontaneous_lifetime_1(self):
 		# T_spon = T_1  / Branching ratio
 
-		self.spontaneous_lifetime = -1 * (self.optical_lifetime / self.branching_ratio)
+		self.spontaneous_lifetime = (self.optical_lifetime / self.branching_ratio)
 
 	def solve_dipole_moment_1(self):
 		# \mu = (\hbar * e^2 * f) / (2 * m_e * \omega)
@@ -198,7 +222,7 @@ class erbium_host_crystals():
 		numerator = constants.hbar * (constants.e ** 2) * self.oscilator_strength
 		denominator = 2 * constants.m_e * angular_frequency
 
-		self.dipole_moment = -1 * (numerator / denominator)
+		self.dipole_moment = (numerator / denominator)
 
 	def solve_spontaneous_lifetime_2(self):
 
@@ -206,24 +230,24 @@ class erbium_host_crystals():
 		numerator = 3 * constants.epsilon_0 * constants.c * (self.wavelength ** 2) * constants.hbar
 		denominator = 4 * constants.pi * self.refractive_index * (self.dipole_moment ** 2) * angular_frequency
 		refractive_index_modifier = (2 * (self.refractive_index ** 2) + 1) / (3 * (self.refractive_index ** 2))
-		self.spontaneous_lifetime = -1 * ((numerator / denominator) * (refractive_index_modifier ** 2))
+		self.spontaneous_lifetime = ((numerator / denominator) * (refractive_index_modifier ** 2))
 
 	def solve_dipole_moment_2(self):
 		angular_frequency = 2 * constants.pi * constants.c / self.wavelength
 		numerator = 3 * constants.epsilon_0 * constants.c * (self.wavelength ** 2) * constants.hbar
 		denominator = 4 * constants.pi * self.refractive_index * self.spontaneous_lifetime * angular_frequency
 		refractive_index_modifier = (2 * (self.refractive_index ** 2) + 1) / (3 * (self.refractive_index ** 2))
-		self.dipole_moment = -1 * ( ((numerator / denominator) ** 0.5) * refractive_index_modifier )
+		self.dipole_moment = ((numerator / denominator) ** 0.5) * refractive_index_modifier
 
 	def solve_optical_lifetime(self):
 		# T_1 = Branching ratio * T_spon
 
-		self.optical_lifetime = -1 * (self.branching_ratio * self.spontaneous_lifetime)	
+		self.optical_lifetime = (self.branching_ratio * self.spontaneous_lifetime)	
 
 	def solve_branching_ratio(self):
 		# Branching ratio = T_1 / T_spon
 
-		self.branching_ratio = -1 * (self.optical_lifetime / self.spontaneous_lifetime)
+		self.branching_ratio = (self.optical_lifetime / self.spontaneous_lifetime)
 
 	def solve_oscilator_strength(self):
 		# f = (2 * \mu * m_e * \omega) / (\hbar * e^2)
@@ -232,12 +256,12 @@ class erbium_host_crystals():
 		numerator = 2 * (self.dipole_moment ** 2) * constants.m_e * angular_frequency
 		denominator = constants.hbar * (constants.e ** 2)
 
-		self.oscilator_strength = -1 * (numerator / denominator)
+		self.oscilator_strength = (numerator / denominator)
 
 	def solve_lifetime_limit(self):
 		# \gamma_0 = 1 / (2\pi * T_1)
 
-		self.lifetime_limit = -1 * (1 / (2 * constants.pi * self.optical_lifetime))
+		self.lifetime_limit = (1 / (2 * constants.pi * self.optical_lifetime))
 
 
 def main():
