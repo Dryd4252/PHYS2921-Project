@@ -58,38 +58,39 @@ class erbium_host_crystals():
 		self.calculated_attributes = set()
 
 		self.site_symetry_dict = {
-			"O_h": 6,
-			"D_4h": 5,
-			"T_h": 5,
-			"O": 5,
-			"T_d": 5,
-			"D_6h": 5,
-			"C_4h": 4,
-			"D_4": 4,
-			"D_2d": 4,
-			"C_4v": 4,
-			"D_2h": 4,
-			"T": 4,
-			"D_6": 4,
-			"C_6h": 4,
-			"C_6v": 4,
-			"D_3d": 4,
-			"D_3h": 4,
-			"S_4": 3,
-			"C_4": 3,
-			"D_2": 3,
-			"C_2h": 3,
-			"C_2v": 3,
-			"C_6": 3,
-			"C_3i": 3,
-			"D_3": 3,
-			"C_3v": 3,
-			"C_3h": 3,
-			"C_i": 2,
-			"C_2": 2,
-			"C_s": 2,
-			"C_3": 2,
-			"C_1": 1,
+			"O_h": -6,
+			"D_4h": -5,
+			"T_h": -5,
+			"O": -5,
+			"T_d": -5,
+			"D_6h": -5,
+			"C_4h": -4,
+			"D_4": -4,
+			"D_2d": -4,
+			"C_4v": -4,
+			"D_2h": -4,
+			"T": -4,
+			"D_6": -4,
+			"C_6h": -4,
+			"C_6v": -4,
+			"D_3d": -4,
+			"D_3h": -4,
+			"S_4": -3,
+			"C_4": -3,
+			"D_2": -3,
+			"C_2h": -3,
+			"C_2v": -3,
+			"C_6": -3,
+			"C_3i": -3,
+			"D_3": -3,
+			"C_3v": -3,
+			"C_3h": -3,
+			"C_i": -2,
+			"C_2": -2,
+			"C_s": -2,
+			"C_1h": -2,
+			"C_3": -2,
+			"C_1": -1,
 
 		}
 
@@ -132,10 +133,9 @@ class erbium_host_crystals():
 
 		self.site_symetry_order = self.site_symetry_dict[self.site_symetry] if site_symetry != None else None
 
-		if self.optical_lifetime is not None:
-			normalised_lifetime = self.optical_lifetime * self.refractive_index
-			self.normalised_lifetime = normalised_lifetime if normalised_lifetime < 0 else -1 *normalised_lifetime
+		self.normalised_lifetime = -1 * self.optical_lifetime * self.refractive_index if self.optical_lifetime != None else None
 
+		
 		self.wavelength = self.wavelength * 1e9 if self.wavelength != None else None
 		self.optical_lifetime = self.optical_lifetime * 1e3 if self.optical_lifetime != None else None
 		self.spontaneous_lifetime = self.spontaneous_lifetime * 1e3 if self.spontaneous_lifetime != None else None
@@ -302,7 +302,7 @@ def main():
 								#spont_lifetime  #limit_lifetime  #oscilator_strength  refractive_index
 								, None, None     , None, None     , None, None         , None, None 
 								#site symetry #site_symmetry_order  #normalised_lifetime
-								, "D_2d" 			, None 				, None , None)
+								, "D_2d" 			, None 			, None , None)
 	YVO_4.print_values()
 	# print(YVO_4.get_values())
 
