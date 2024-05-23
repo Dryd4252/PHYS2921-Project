@@ -298,11 +298,11 @@ def main():
 	#Calculated values will be returned with a negative sign.
 
 								#wavelength   #lifetime   #branching ratio  #dipole moment
-	YVO_4 = erbium_host_crystals(1529.21, None, 3.34, None  , 0.415, None     , 1.00E-32, None
+	YVO_4 = erbium_host_crystals(None, None, None, None  , None, None     , None, None
 								#spont_lifetime  #limit_lifetime  #oscilator_strength  refractive_index
 								, None, None     , None, None     , None, None         , None, None 
 								#site symetry #site_symmetry_order  #normalised_lifetime
-								, "D_2d" 			, None 			, None , None)
+								, None 			, None 			, None , None)
 	YVO_4.print_values()
 	# print(YVO_4.get_values())
 
