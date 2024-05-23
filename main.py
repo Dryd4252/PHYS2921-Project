@@ -131,7 +131,11 @@ class erbium_host_crystals():
 
 		self.site_symetry = site_symetry		
 
-		self.site_symetry_order = self.site_symetry_dict[self.site_symetry] if site_symetry != None else None
+		if self.site_symetry not in self.site_symetry_dict:
+			print(f"site_symetry [{self.site_symetry}] not found")
+			self.site_symetry = None
+		else :
+			self.site_symetry_order = self.site_symetry_dict[self.site_symetry]
 
 		self.normalised_lifetime = -1 * self.optical_lifetime * self.refractive_index if self.optical_lifetime != None else None
 
@@ -298,11 +302,11 @@ def main():
 	#Calculated values will be returned with a negative sign.
 
 								#wavelength   #lifetime   #branching ratio  #dipole moment
-	YVO_4 = erbium_host_crystals(None, None, None, None  , None, None     , None, None
+	YVO_4 = erbium_host_crystals(1533.90, None, None, None  , None, None     , None, None
 								#spont_lifetime  #limit_lifetime  #oscilator_strength  refractive_index
-								, None, None     , None, None     , None, None         , None, None 
+								, None, None     , None, None     , None, None         , 1.88, None 
 								#site symetry #site_symmetry_order  #normalised_lifetime
-								, None 			, None 			, None , None)
+								, "S_4" 			, None 			, None , None)
 	YVO_4.print_values()
 	# print(YVO_4.get_values())
 
