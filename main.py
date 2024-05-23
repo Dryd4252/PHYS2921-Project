@@ -129,11 +129,11 @@ class erbium_host_crystals():
 			elif x == "lifetime_limit":
 				self.lifetime_limit *= -1							
 
-		self.site_symetry = site_symetry		
+		self.site_symetry = site_symetry	
 
 		if self.site_symetry not in self.site_symetry_dict:
 			print(f"site_symetry [{self.site_symetry}] not found")
-			self.site_symetry = None
+			self.site_symetry_order = None
 		else :
 			self.site_symetry_order = self.site_symetry_dict[self.site_symetry]
 
@@ -178,10 +178,10 @@ class erbium_host_crystals():
 		ordered_attributes.append(self.oscilator_strength.s if self.oscilator_strength is not None else None)
 		ordered_attributes.append(self.refractive_index.n if self.refractive_index is not None else None)
 		ordered_attributes.append(self.refractive_index.s if self.refractive_index is not None else None)
-		ordered_attributes.append(self.site_symetry if self.refractive_index is not None else None)
-		ordered_attributes.append(self.site_symetry_order if self.refractive_index is not None else None)
-		ordered_attributes.append(self.normalised_lifetime.n if self.normalised_lifetime.n is not None else None)
-		ordered_attributes.append(self.normalised_lifetime.s if self.normalised_lifetime.s is not None else None)
+		ordered_attributes.append(self.site_symetry if self.site_symetry is not None else None)
+		ordered_attributes.append(self.site_symetry_order if self.site_symetry_order is not None else None)
+		ordered_attributes.append(self.normalised_lifetime.n if self.normalised_lifetime is not None else None)
+		ordered_attributes.append(self.normalised_lifetime.s if self.normalised_lifetime is not None else None)
 		return ordered_attributes
 
 	def print_values(self):
