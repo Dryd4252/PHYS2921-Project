@@ -1,0 +1,33 @@
+# dependancies
+
+this program requires two non-standard dependancies! these are:
+https://github.com/Dryd4252/PHYS2921-Project
+and
+https://github.com/HugoGuillen/refractiveindex.info-sqlite
+
+
+for the first, all that this script uses is `main.py`: if you copy/move it into the same folder/directory as `per-row-automator.py`, it should work! (Make sure to keep the name `main.py`, or change it within the `per-row-automator.py` script.
+
+for the second, the script simply needs the 'refractivesqlite' folder/directory to be in the same folder/directory as `per-row-automator.py`.
+
+there's bound to be a better way to do this (and if you know one, i'd love to know!)
+
+
+
+# usage
+
+simply run the program with the argument being the spreadsheet filename!
+
+please make sure the spreadsheet has the correct column layout!! the layout is:
+
+|#|#|#|wavelength|wavelength uncertainty|optical lifetime|optical lifetime uncertainty|branching ratio|branching ratio uncertainty|dipole moment|dipole moment uncertainty|spontaneous lifetime|spontaneous lifetime uncertainty|lifetime limit|lifetime limit uncertainty|oscillator strength|oscillator strength uncertainty|refractive index|refractive index uncertainty|...|
+
+note that the #s indicate columns that can be anything (we used chemical formula of the material, name of the site and concentration of erbium) and the ...s indicate that you can have any number of columns (up until the computer can't handle it)
+
+otherwise having a different layout will not work!
+
+
+
+# updating the refractive index database!
+
+i don't have a good way of grabbing the most up to date database, currently you can change the link manually by changing the value/link of `ref_db_url` which defined close to the top of the `dboperations.py` program!
